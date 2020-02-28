@@ -35,11 +35,11 @@ jawaban:
      region=`awk -F '\t' 'NR>1 {regions[$13]+=$21} END { for ( i in regions) print i,regions[i] | "sort -gk2" }' Sample-Superstore.tsv | awk 'NR==1 {print $1}'` 
      printf "Region dengan profit terkecil adalah $region\n\n"
 
-- Pertama kita buat awk dengan pemisah tab ('\t'). Karena row pertama merupakan nama dari tabel sehingga tidak memiliki data, maka digunakan NR>1.
-- {regions[$13]+=$21} digunakan untuk menjumlahkan keseluruhan profit yang ada di masing-masing state.
-- END{} artinya kode ini dijalankan sekali dan di akhir saja.
-- for (i in regions) print i,regions[i] digunakan untuk menampilkan seluruh array dan nilai yang ada di dalam array.
-- "sort -gk2" digunakan untuk mengurutkan array dari yang terkecil ke terbesar berdasarkan nilai dari arry tersebut. __-g__ karena profit bertipe data float. kemudian __k2__ karena profit ada di kolom kedua.
+- Pertama kita buat awk dengan pemisah tab ('\t'). Karena row pertama merupakan nama dari tabel sehingga tidak memiliki data, maka digunakan __NR>1__.
+- __{regions[$13]+=$21}__ digunakan untuk menjumlahkan keseluruhan profit yang ada di masing-masing state.
+- __END{}__ artinya kode ini dijalankan sekali dan di akhir saja.
+- __for (i in regions) print i,regions[i]__ digunakan untuk menampilkan seluruh array dan nilai yang ada di dalam array.
+- __"sort -gk2"__ digunakan untuk mengurutkan array dari yang terkecil ke terbesar berdasarkan nilai dari arry tersebut. __-g__ karena profit bertipe data float. kemudian __k2__ karena profit ada di kolom kedua.
 - lalu di pipe dan awk lagi untuk memasukkan baris pertama ke dalam "region".
 - yang terakhir adalah menampilkan isi dari variabel region.
 
@@ -109,7 +109,26 @@ jawaban :
      
      cat /dev/urandom | tr -dc '0-9 A-Z a-z' | fold -w 28 | head -n 1 | sed 's/ //g' > `echo $1 | tr -dc 'A-Z a-z'`.txt
 
+- __cat >__ berfungsi untuk meng-overwrite file dengan tulisan baru.
+- __/dev/urandom__ digunakan untuk menampilkan karakter random. Karakter ini sangat banyak dan benar-benar random, oleh karena itu diberi tambahan __tr -dc__ untuk memberikan batasan pada karakter random yang ditampilkan. Dalam kasus ini diminta hanya alfabet dan numerik, maka menggunakan __'0-9 A-Z a-z'__ sehingga karakter selain itu tidak ditampilkan.
+- __fold -w 28__ digunakan untuk membatasi panjang karakter, dalam hal ini jumlahnya 28 karakter.
+- __head -n 1__ untuk menampilkan hanya satu baris saja. jika tidak diberi batasan ini maka akan terus meng-generate karakter random sebanyak 28 karakter
+- __sed__ digunakan untuk mengedit atau mengubah karakter menjadi karakter lain. __'s/ //g'__ untuk menyatakan apa yang ingin diubah dan apa hasilnya setelah diubah. dalam kasus ini adalah untuk mengubah spasi menjadi tidak ada.
+- __echo $1__ untuk menampilkan karakter random tadi ke dalam file
+- __tr -dc 'A-Z a-z'__ sama seperti sebelumnya, ini digunakan untuk memberi batasan nama file yang diinputkan. Kemudian __.txt__ adalah extensi dari filenya.
 
+#### 2c
 
+     #!/bin/bash
+     
+     for nama in $@
+     do
+     waktu=`date +%H -r $nama`
+     nama_sblm=`basename $nama .txt`
+     nama_stlh=`echo $nama_sblm | caesar $waktu`
+     mv $nama $nama_stlh.txt
+     done
+
+- k
 
 
