@@ -117,6 +117,8 @@ jawaban :
 - __echo $1__ untuk menampilkan karakter random tadi ke dalam file
 - __tr -dc 'A-Z a-z'__ sama seperti sebelumnya, ini digunakan untuk memberi batasan nama file yang diinputkan. Kemudian __.txt__ adalah extensi dari filenya.
 
+![](soal2/shift2ab.png)
+
 #### 2c
 
      #!/bin/bash
@@ -129,6 +131,33 @@ jawaban :
      mv $nama $nama_stlh.txt
      done
 
-- k
+- Pertama adalah melakukan pengulangan untuk mendapatkan input dan memasukkannya ke dalam variabel nama. Di sini menggunakan __$@__ agar semua input dapat terbaca.
+- kemudian membuat variabel __waktu__ yang berisi waktu terakhir kali file dimodified. __date +%H -r__ digunakan untuk mendapatkan _last modification of file_, __%H__ untuk mendapatkan jamnya (misal 5.03 yang diambil adalah 5), sedangkan __-r__ menampilkan waktu/pukul berapa file itu terakhir di modifikasi (misal 02.39)
+- Selanjutnya membuat variabel __nama_sblm__ yang berisi perintah untuk menghilangkan ekstensi dari file, yaitu .txt
+- Lalu meng-enkripsi nama file yang telah dihilangkan ekstensinya dengan menggunakan caesar chipper yang menggunakan perhitungan berdasarkan __waktu__, kemudian dimasukkan ke dalam variabel __nama_stlh__
+- Terakhir adalah me-rename file tersebut dengan command __mv__
+
+![](soal2/shift2c.png)
+
+#### 2d
+
+     #!/bin/bash
+     
+     for nama in $@
+     do
+     waktu=`date +%H -r $nama`
+     nama_sblm=`basename $nama .txt`
+     waktu_baru=`expr 26 - $waktu`
+     nama_stlh=`echo $nama_sblm | caesar $waktu_baru`
+     mv $nama $nama_stlh.txt
+     done
+
+- Nomor 2d merupakan kebalikan dari nomor 2c karena merupakan dekripsi.
+- Perbedaannya terletak pada variabel __waktu baru__ yang isinya adalah 26 (jumlah alfabet) dikurangi dengan __waktu__ agar perhitungannya dapat kembali lagi ke huruf aslinya.
+
+![](soal2/shift2d.png)
+
+
+
 
 
