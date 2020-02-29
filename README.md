@@ -222,9 +222,12 @@ jawaban:
      cat temp.log >> wget.log
      rm temp.log
 
--
--
--
+- __ls -d__ digunakan untuk menampilkan file di directory sekarang, __wc -l__ digunakan untuk menghitung berapa jumlah output line. Maka dari itu yang terjadi disini adalah, __ls -d__ akan menghasilkan output berupa file - file dengan nama 'pdkt_kusuma_\*' simbol asterisk digunakan sebagai wildcard. Lalu dari hasil tersebut kita hitung ada berapa banyak jumlah file 'pdkt_kusuma_' menggunakan __wc -l__ lalu disimpan dalam variable now. variable now ini digunakan untuk melakukan penamaan file 'pdkt_kusuma' berkelanjutan.
+- __if \[ $now == 0 ]__ digunakan untuk mengecek jika nilai dari now adalah 0, jika 0 maka __then__ akan terjalankan yang isinya  menjadikan isi dari variable now 1 dan max 28. Selain itu, maka max adalah isi dari now ditambah dengan 28. __fi__ untuk menutup __if__ diawal.
+- perulangan __for ((i=now; i<=max; i=i+1))__ digunakan untuk melakukan command __wget__ sebanyak 28 kali.
+- __-O__ digunakan untuk merename file manjadi 'pdkt_kusuma_', __-a__ digunakan untuk menyimpan log kedalam 'temp.log'.
+- __cat__ akan menambahkan isi dari 'temp.log' kedalam 'wget.log' karena digunakan __>>__.
+- __rm__ akan menghapus 'temp.log'
 
 ![](soal3/shift3a.png)
 
