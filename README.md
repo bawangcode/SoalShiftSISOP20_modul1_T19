@@ -229,6 +229,7 @@ jawaban:
 - __cat__ akan menambahkan isi dari 'temp.log' kedalam 'wget.log' karena digunakan __>>__.
 - __rm__ akan menghapus 'temp.log'
 
+Berikut adalah hasil dari eksekusi program tersebut. Terlihat bahwa ada 28 gambar dengan nama 'pdkt_kusuma_1' dan seterusnya.
 ![](soal3/shift3a.png)
 
 #### 3b
@@ -281,9 +282,25 @@ jawaban:
      cat wget.log >> wget.log.bak
      rm wget.log
 
--
--
--
+-  __ls -d__ digunakan untuk menampilkan file di directory sekarang, __wc -l__ digunakan untuk menghitung berapa jumlah output line. Maka dari itu yang terjadi disini adalah, __ls -d kenangan__ akan menghasilkan output berupa direktori kenangan. Lalu dari hasil tersebut kita hitung ada berapa direktori dengan nama kenangan menggunakan __wc -l__ lalu disimpan dalam variable cekdir.
+- __if \[ $cekdir == 0 ]__ digunakan untuk mengecek jika isi dari variable cekdir adalah 0 atau tidak. Jika 0, __then__ akan menjalankan __mkdir kenangan__ yang berfungsi untuk membuat direktori kenangan.
+- __ls -d duplicate__ akan menghasilkan output berupa direktori duplicate. Lalu dari hasil tersebut kita hitung ada berapa direktori dengan nama duplicate menggunakan __wc -l__ lalu disimpan dalam variable cekdir2.
+- __if \[ $cekdir2 == 0 ]__ digunakan untuk mengecek jika isi dari variable cekdir2 adalah 0 atau tidak. Jika 0, __then__ akan menjalankan __mkdir duplicate__ yang berfungsi untuk membuat direktori duplicate.
+- __ls -d pdkt_kusuma_* | wc -l__ digunakan untuk mendapatkan output berupa banyaknya file dengan nama 'pdkt_kusuma' di folder sekarang. Lalu disimpan dalam variable sum.
+- __for ((i=1; i<=sum; i=i+1))__ berfungsi untuk melakukan loop sebanyak jumlah file dengan nama 'pdkt_kusuma'.
+- __\`expr $sum - $i\`__  __expr__ berfungsi untuk melakukan operasi aritmatika dalam bash, lalu disimpan dalam variable j.
+- __awk__ digunakan untuk melakukan operasi awk. __-F '/'__ digunakan untuk menentukan field separator pada awk menjadi /. __/Location/__ digunakan untuk mengambil line yang mengandung kalimat Location. Lalu line yang telah diambil akan diberi operasi berupa __{print substr($4,7,21)}__, __print__ berfungsi untuk menampilkan, __substr($4,7,21)__ digunakan untuk mengambil dari kolom keempat, menampilkan sebanyak 21 karakter dimulai dari karakter ke-7.
+- __head -n $i__ berfungsi untuk menampilkan hasil teratas  sebanyak isi dari variable i.
+- __tail -n $i__ berfungsi untuk menampilkan hasil terbawah sebanyak isi dari variable i.
+- __-v__ digunakan untuk memasukkan variable kedalam awk.
+- __BEGIN {n=0} /'$img'/ {++n} END {print n}__ pertama - tama deklarasi variable n=0, __/$img/__ digunakan untuk mengecek line yang memiliki isi dari variable img. Untuk setiap line yang mengandung isi dari variable img maka nilai n akan bertambah (__{++n}__). Lalu pada akhirnya isi dari n akan diprint dan disimpan dalam variable count.
+- __if \[ $count == 0 ]__ digunakan untuk melakukan pengecekan jika isi dari variable count adalah 0. Jika 0 maka __countk=\`ls kenangan/kenangan_* | wc -l\`__ akan dieksekusi untuk mengecek ada berapa file bernama kenangan dalam folder kenangan.
+- __expr 1 + $countk__ digunakan untuk melakukan operasi aritmatika penjumlahan isi dari variable countk + 1 lalu disimpan dalam variable k.
+- __mv pdkt_kusuma_$i kenangan/kenangan_$k__ __mv__ akan memindahkan file 'pdkt_kusuma' dalam direktori kenangan dengan penamaan 'kenangan'.
+- Jika count tidak sama dengan 0 maka, file akan dipindahkan ke direktori duplicate dengan penamaan 'duplicate'
+- __cat wget.log >> wget.log.bak__ berfungsi untuk menambahkan isi dari wget.log kedalam wget.log.bak.
+- __rm w.get.log__ berfungsi untuk menghapus file wget.log.
+
 
 ![](soal3/shift3ckenang.png)
 
