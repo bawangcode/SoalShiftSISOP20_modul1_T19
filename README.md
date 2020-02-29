@@ -93,7 +93,7 @@ HINT: enkripsi yang digunakan adalah caesar cipher.
 
 *Gunakan Bash Script
 
-#### Link code soal 1 :
+#### Link code soal 2 :
 
 ##### Soal 2a dan 2b : [shift2ab.sh](https://github.com/bawangcode/SoalShiftSISOP20_modul1_T19/blob/master/soal2/shift2ab.sh)
 
@@ -157,6 +157,132 @@ jawaban :
 
 ![](soal2/shift2d.png)
 
+# Nomor 3
+
+1 tahun telah berlalu sejak pencampakan hati Kusuma. Akankah sang pujaan hati
+kembali ke naungan Kusuma? Memang tiada maaf bagi Elen. Tapi apa daya hati yang
+sudah hancur, Kusuma masih terguncang akan sikap Elen. Melihat kesedihan Kusuma,
+kalian mencoba menghibur Kusuma dengan mengirimkan gambar kucing. [a] Maka dari
+itu, kalian mencoba membuat script untuk mendownload 28 gambar dari
+"https://loremflickr.com/320/240/cat" menggunakan command wget dan menyimpan file
+dengan nama "pdkt_kusuma_NO" (contoh: pdkt_kusuma_1, pdkt_kusuma_2,
+pdkt_kusuma_3) serta jangan lupa untuk menyimpan log messages wget kedalam
+sebuah file "wget.log". Karena kalian gak suka ribet, kalian membuat penjadwalan untuk menjalankan script download gambar tersebut. Namun, script download tersebut hanya
+berjalan[b] setiap 8 jam dimulai dari jam 6.05 setiap hari kecuali hari Sabtu Karena
+gambar yang didownload dari link tersebut bersifat random, maka ada kemungkinan
+gambar yang terdownload itu identik. Supaya gambar yang identik tidak dikira Kusuma
+sebagai spam, maka diperlukan sebuah script untuk memindahkan salah satu gambar
+identik. Setelah memilah gambar yang identik, maka dihasilkan gambar yang berbeda
+antara satu dengan yang lain. Gambar yang berbeda tersebut, akan kalian kirim ke
+Kusuma supaya hatinya kembali ceria. Setelah semua gambar telah dikirim, kalian akan
+selalu menghibur Kusuma, jadi gambar yang telah terkirim tadi akan kalian simpan
+kedalam folder /kenangan dan kalian bisa mendownload gambar baru lagi. [c] Maka dari
+itu buatlah sebuah script untuk mengidentifikasi gambar yang identik dari keseluruhan
+gambar yang terdownload tadi. Bila terindikasi sebagai gambar yang identik, maka
+sisakan 1 gambar dan pindahkan sisa file identik tersebut ke dalam folder ./duplicate
+dengan format filename "duplicate_nomor" (contoh : duplicate_200, duplicate_201).
+Setelah itu lakukan pemindahan semua gambar yang tersisa kedalam folder ./kenangan
+dengan format filename "kenangan_nomor" (contoh: kenangan_252, kenangan_253).
+Setelah tidak ada gambar di current directory, maka lakukan backup seluruh log menjadi
+ekstensi ".log.bak".
+
+Hint : Gunakan wget.log untuk membuat location.log yang isinya
+merupakan hasil dari grep "Location".
+
+*Gunakan Bash, Awk dan Crontab
+
+#### Link code soal 3 :
+
+##### Soal 3a : [shift3a](https://github.com/bawangcode/SoalShiftSISOP20_modul1_T19/blob/master/soal3/Soal3afix.sh)
+
+##### Soal 3b : [shift3b](https://github.com/bawangcode/SoalShiftSISOP20_modul1_T19/blob/master/soal3/crontabsoal3b)
+
+##### Soal 3c : [shift3c](https://github.com/bawangcode/SoalShiftSISOP20_modul1_T19/blob/master/soal3/Soal3cfix.sh)
+
+jawaban:
+
+#### 3a
+
+     #!bin/bash
+     
+     now=`ls -d pdkt_kusuma_* | wc -l`
+     if [ $now == 0 ]
+     then
+      now=1
+      max=28
+     else
+      max=$now+28
+     fi
+     
+     for ((i=now; i<=max; i=i+1))
+     do
+     wget -O "pdkt_kusuma_$i"  -a "temp.log" "https://loremflickr.com/320/240/cat"
+     done
+     
+     cat temp.log >> wget.log
+     rm temp.log
+
+-
+-
+-
+
+![](soal3/shift3a.png)
+
+#### 3b
+
+     5 6/8 * * 1-5,7 bash /home/elak/Downloads/SoalShiftSISOP20_modul1_T19-master/soal3/Soal3afix.sh
+
+-
+-
+-
+
+#### 3c
+
+     #!bin/bash
+     
+     cekdir=`ls -d kenangan | wc -l`
+     if [ $cekdir == 0 ]
+     then
+        mkdir kenangan
+     fi
+     
+     cekdir2=`ls -d duplicate | wc -l`
+     if [ $cekdir2 == 0 ]
+     then
+        mkdir duplicate
+     fi
+     
+     sum=`ls -d pdkt_kusuma_* | wc -l`
+     
+     for ((i=1; i<=sum; i=i+1))
+     do
+        j=`expr $sum - $i`
+        img=`awk  -F '/' '/Location/ {print substr($4,7,21)}' wget.log | head -n $i | tail -n 1`
+        count=`awk -F '/' '/Location/ {print substr($4,7,21)}' wget.log | tail -n $j | awk -v img=$img 'BEGIN {n=0} /'$img'/ {++n} END {print n}'`
+     
+     if [ $count == 0 ]
+     then
+        countk=`ls kenangan/kenangan_* | wc -l`
+        k=`expr 1 + $countk`
+        mv pdkt_kusuma_$i kenangan/kenangan_$k
+     else
+        countd=`ls duplicate/duplicate_* | wc -l`
+        d=`expr $countd + 1`
+        mv pdkt_kusuma_$i duplicate/duplicate_$d
+     fi
+     
+     done
+     
+     cat wget.log >> wget.log.bak
+     rm wget.log
+
+-
+-
+-
+
+![](soal3/shift3ckenang.png)
+
+![](soal3/shift3cdup.png)
 
 
 
