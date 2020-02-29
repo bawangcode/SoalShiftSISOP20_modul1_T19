@@ -232,9 +232,11 @@ jawaban:
 
      5 6/8 * * 1-5,7 bash /home/elak/Downloads/SoalShiftSISOP20_modul1_T19-master/soal3/Soal3afix.sh
 
--
--
--
+- Pada soal, dijelaskan bahwa crontab dimulai tiap pukul 6.05 dan berjalan tiap 8 jam. Kemudian dijalankan setiap hari kecuali hari Sabtu
+- * yang pertama diganti dengan angka __5__, karena dijalankan tiap menit ke 5
+- * kedua diganti dengan __6/8__, karena dimulai pada pukul 6 dan dijalankan tiap 8 jam
+- * ketiga dan keempat tidak diganti karena tidak ada ketentuan yang menyebutkan tanggal dan bulan
+- * kelima diganti dengan __1-5,7__ karena diminta untuk dijalankan pada hari ke 1-5 dan hari 7.
 
 #### 3c
 
